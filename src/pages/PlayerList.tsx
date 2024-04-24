@@ -127,9 +127,9 @@ const PlayerList: React.FC = () => {
                                 <span style={spanText}>Jersey Size: {player.jersey_size}</span>
                             </div>
 
-                            {/* <div style={{display:'flex'}}>
-                                <span style={spanText}>Jersey Size: {player.jersey_size}</span>
-                            </div> */}
+                            <div style={{display:'flex'}}>
+                                <span style={spanText}>Jersey Name: {player.jersey_name}</span>
+                            </div> 
 
                             <div style={{display:'flex'}}>
                                 <span style={spanText}>Contact : {player.contact_no}</span>
