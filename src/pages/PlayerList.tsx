@@ -87,7 +87,9 @@ const PlayerList: React.FC = () => {
                     </div>
 
                     <div style={cardHeader}>
-                        <img src={BACKEND_URL + '/player_images/' + player.profile_image} alt='logo' style={profileImageStyle} /> 
+                        {/* <img src={BACKEND_URL + '/player_images/' + player.profile_image} alt='logo' style={profileImageStyle} />  */}
+                        <img src={`https://drive.google.com/thumbnail?id=${player.profile_image}&z=w1000`} alt="logo" style={profileImageStyle}/>
+
                         <div style={cardBodyTextStyle}> 
                             
                             <div style={{display:'flex'}}>

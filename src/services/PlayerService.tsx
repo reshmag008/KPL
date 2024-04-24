@@ -55,7 +55,7 @@ export const PlayerService = () => ({
     },
 
     PlayerImageUpload : (formData:any) => {
-        return(axios.post(BACKEND_URL + "/player_image_upload", formData))
+        return(axios.post(BACKEND_URL + "/upload-file", formData))
     }
 
 

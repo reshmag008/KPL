@@ -87,7 +87,7 @@ const PlayerRegistration: React.FC = () => {
         console.log("response== ", response);
         if(response.data){
           toast.success('Player Registered Succesfully', { autoClose: 2000 })
-          playerImageUpload();
+          playerImageUpload(response.data.id);
         }else{
           setIsLoading(false);
           toast.error('Registration Failed',{ autoClose: 2000 })
@@ -113,10 +113,11 @@ const PlayerRegistration: React.FC = () => {
   }
   };
 
-  const playerImageUpload = () => {
+  const playerImageUpload = (playerId:any) => {
     const formFileData = new FormData()
     if(selectedImage){
       formFileData.append('file_name', formData.fullname + "_" + formData.contact_no + ".jpeg",)
+      formFileData.append('player_id', playerId)
       formFileData.append('image', selectedImage)
     }
 
