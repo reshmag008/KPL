@@ -12,6 +12,10 @@ import no5 from '../assets/n05-icon.jpeg'
 import Loader from "react-js-loader";
 import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import gradient from "../assets/gradient7.jpg"
+import n05 from "../assets/n05.png"
+
+
 
 const AuctionCenter: React.FC = () => {
   
@@ -255,7 +259,8 @@ const AuctionCenter: React.FC = () => {
         <>
         <div style={players__card__wrap}>
           <div style={cardHeader}>
-            <img src={pallorImage} alt="logo" style={imageStyle} />
+            {/* <img src={pallorImage} alt="logo" style={imageStyle} /> */}
+            <span style={cardIconTextStyle}>KPL</span>
             <div style={cardHeaderTextStyle}>
               <h2
                 style={{
@@ -265,7 +270,7 @@ const AuctionCenter: React.FC = () => {
                   textAlign: "center",
                 }}
               >
-                Palloor Premier League
+                Kavumbhagam Premier League
               </h2>
               {/* <h2 style={{fontSize: '25px',fontFamily: 'monospace',fontStyle: 'italic',marginTop: '-26px',textAlign: 'center'}}>Premier League</h2> */}
             </div>
@@ -273,11 +278,14 @@ const AuctionCenter: React.FC = () => {
           </div>
 
           <div style={cardHeader}>
-            <img
+            {/* <img
               src={currentBidPlayer.profile_image}
               alt="logo"
               style={profileImageStyle}
-            />
+            /> */}
+
+            <img  src={`https://drive.google.com/thumbnail?id=${currentBidPlayer.profile_image}&z=w1000`} alt="logo" style={profileImageStyle}/>
+
             <div style={cardBodyTextStyle}>
               <div style={{ display: "flex" }}>
                 <span style={fullNameText}>{currentBidPlayer.fullname}</span>
@@ -347,6 +355,16 @@ const AuctionCenter: React.FC = () => {
                   Jersey Size: {currentBidPlayer.jersey_size}
                 </span>
               </div>
+
+              <div style={{ display: "flex" }}>
+                <span style={spanText}>
+                  Jersey Name: {currentBidPlayer.jersey_name}
+                </span>
+                <div style={n05IconStyle}>
+                    <img src={n05} alt='logo' style={no5Style} />
+                </div>
+              </div>
+
             </div>
           </div>
           <div style={cardFooter}></div>
@@ -383,7 +401,8 @@ const AuctionCenter: React.FC = () => {
                     key={index}
                 >
                     <div style={teamStyle}>
-                    <img src={team.team_logo} alt="logo" style={teamLogoStyle} />
+                    {/* <img src={team.team_logo} alt="logo" style={teamLogoStyle} /> */}
+                    <img key={index} src={`https://drive.google.com/thumbnail?id=${team.team_logo}&z=w1000`} alt="logo" style={teamLogoStyle}/>
                     <h4 style={{ padding: "10px" }}>{team.team_name}</h4>
                     </div>
                     {currentBidTeam && currentBidTeam.id === team.id && (
@@ -493,7 +512,8 @@ const profileImageStyle: React.CSSProperties = {
 const players__card__wrap: React.CSSProperties = {
   width: "40%",
   gap: "2rem",
-  backgroundImage: "linear-gradient(to top,  #000033 , #800080)",
+  // backgroundImage: "linear-gradient(to top,  #000033 , #800080)",
+  backgroundImage : `url(${gradient})`,
   border: "1px solid #ccc",
   boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
   borderRadius: "8px",
@@ -525,6 +545,27 @@ const playerCountStyle: React.CSSProperties = {
   flexDirection: "column",
   alignItems: "center",
 };
+
+const cardIconTextStyle: React.CSSProperties = {
+  padding: '10px',
+  cursor: 'pointer',
+  color: 'yellow',
+  textAlign: 'left',
+  fontSize: '50px',
+  textShadow: "1px 1px 0 #f00, 2px 2px 0 #f00, 3px 3px 0 #f00",
+  fontWeight:"bolder",
+  fontStyle:'italic'
+};
+
+const n05IconStyle : React.CSSProperties = {
+  display:'flex', justifyContent:'end', marginLeft:"95px"
+}
+
+const no5Style : React.CSSProperties = {
+  height : "3rem",
+  width : "3rem",
+  borderRadius : "50%"
+}
 
 const isMobile = window.matchMedia("(max-width: 600px)").matches;
 if (isMobile) {

@@ -3,6 +3,7 @@ import TeamService from "../services/TeamService";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import S3Service from "../services/s3Service";
+import PlayerService from "../services/PlayerService";
 
 const TeamRegistration: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -65,10 +66,28 @@ const TeamRegistration: React.FC = () => {
         .addTeam(formData)
         .then((response: any) => {
           console.log("response== ", response.data);
-          getPresignedUrl();
+          // getPresignedUrl();
+          teamImageUpload(response.data.id)
         });
     }
   };
+
+  const teamImageUpload = (teamId:any) => {
+    const formFileData = new FormData()
+    if(selectedImage){
+      formFileData.append('file_name', formData.team_name.replace(/[^A-Z0-9]/ig, "_") + '.jpeg',)
+      formFileData.append('team_id', teamId)
+      formFileData.append('image', selectedImage)
+    }
+
+    PlayerService().PlayerImageUpload(formFileData).then((response:any)=>{
+      console.log("response== ", response);
+      resetData();
+    })
+   
+  }
+
+
 
   const getPresignedUrl = () => {
     let file = selectedImage;

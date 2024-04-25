@@ -238,8 +238,8 @@ const svgStyle :React.CSSProperties = {
 }
 
 const profileImageStyle : React.CSSProperties = {
-    height: '10rem',
-    width: '8rem',
+    height: '12rem',
+    width: '9rem',
     padding: '5px',
     alignItems: 'flex-start',
     display: 'grid',

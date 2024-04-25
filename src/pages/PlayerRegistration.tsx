@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
 import PlayerService from "../services/PlayerService";
-import accountLogo from '../assets/account.png';
-import locationLogo from '../assets/location1.png';
-import jerseyLogo from '../assets/jersey.jpeg';
-import linkLogo from '../assets/link.png';
-import phoneLogo from '../assets/phone1.png';
-import whatsappLogo from '../assets/whatsapp.png';
-import playerRoleLogo from '../assets/hat.jpeg';
-import ballingLogo from '../assets/ball.jpeg';
 import S3Service from "../services/s3Service";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
