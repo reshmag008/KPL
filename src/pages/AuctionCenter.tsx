@@ -7,13 +7,15 @@ import battingSvg from '../assets/batter.png'
 import ballingSvg from '../assets/tennisBall.jpg'
 import logo from "../assets/icon.jpeg";
 import 'reactjs-popup/dist/index.css';
-
 import no5 from '../assets/n05-icon.jpeg'
 import Loader from "react-js-loader";
 import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import gradient from "../assets/gradient7.jpg"
-import n05 from "../assets/n05.png"
+import n05 from "../assets/n05.png";
+
+import congratsJif from '../assets/congratulations.gif';
+import clapJif from '../assets/clap.gif'
 
 
 
@@ -28,6 +30,8 @@ const AuctionCenter: React.FC = () => {
   const [currentBidPlayer, setCurrentBidPlayer] = useState<any>({});
   const [searchText, setSearchText] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
+  const [popUpContent, setPopUpContent] = useState<any>({})
+  const [openPopUp, setOpenPopUp] = useState(false);
 
 
   useEffect(() => {
@@ -195,7 +199,9 @@ const AuctionCenter: React.FC = () => {
           setBidAmount(0);
           setCurrentBidTeam({})
           if(response.data && response.data.player_count === TOTAL_PLAYER){
-              InvokeTeamComplete(response.data)
+              // InvokeTeamComplete(response.data)
+              setOpenPopUp(true);
+              setPopUpContent(response.data);
           }
       })
     }else{
@@ -228,6 +234,44 @@ const AuctionCenter: React.FC = () => {
 
   return (
     <div >
+
+{openPopUp && 
+        <div style={overlay}>
+            <div style={popUpStyle} >
+                <div style={{textAlign:'right',marginTop:'-25px', marginRight:'-30px'}}>
+                    <button style={closeButtonStyle} onClick={()=>setOpenPopUp(!openPopUp) }>X</button>
+                </div>
+
+                <div>
+                    <img src={congratsJif} alt="logo" style={jifStyle} />
+                </div>
+
+                <div style={{display:'flex',justifyContent:'center'}}>
+                    {/* <img src={popUpContent.team_logo} alt="logo" style={{width: "6rem",
+                        height: "6rem",
+                        borderRadius: "8px",}} /> */}
+
+<img src={BACKEND_URL + '/team_images/' + popUpContent.team_logo} alt="logo" style={imageStyle}/>
+
+                    <span style={{ padding: "10px", 
+                        fontWeight:'bold',
+                        fontSize:'38px',
+                        fontFamily: 'Georgia, serif' 
+                    }}>{popUpContent.team_name}</span>
+                    
+                </div>
+                <div style={{display:'flex',justifyContent:'center'}}>
+                  <span>Completed Auction</span>
+                </div>
+                <div style={{display:'flex',justifyContent:'center'}}>
+                  <img src={clapJif} alt="logo" style={{  height: "8rem",width: "8rem",padding: "10px",}} />
+                </div>
+
+            </div>
+            </div>
+        }
+
+
       <ToastContainer
             position="top-right"
             autoClose={5000}
@@ -648,6 +692,28 @@ const searchuttonStyle : React.CSSProperties = {
     marginLeft : '10px'
 }
 
+const popUpStyle: React.CSSProperties = {
+  position: 'fixed',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  backgroundColor: 'white',
+  padding: '20px',
+  borderRadius: '10px',
+  boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)',
+};
+
+const closeButtonStyle :  React.CSSProperties = {
+  backgroundColor: 'red' ,
+  color: 'white',
+  padding: '5px 15px',
+  borderRadius: '60%',
+  outline: '0',
+  border: '0',
+  textTransform: 'uppercase',
+  cursor: 'pointer'
+}
+
 const unSoldButtonStyle : React.CSSProperties = {
     backgroundColor: 'red' ,
     color: 'white',
@@ -678,6 +744,24 @@ const bidBackButtonStyle : React.CSSProperties = {
     transition: 'background-color 250ms ease',
     opacity:  1,
     marginLeft : '10px'
+}
+
+
+const overlay : React.CSSProperties={
+  position: 'fixed',
+top: '0',
+left: "0",
+width: "100%",
+height:" 100%",
+backgroundColor: 'rgba(18, 15, 17, 0.85)', /* Semi-transparent black */
+zIndex: '1000'
+}
+
+const jifStyle : React.CSSProperties = {
+height: "8rem",
+width: "20rem",
+padding: "10px",
+
 }
 
 
