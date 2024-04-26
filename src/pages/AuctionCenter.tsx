@@ -1,6 +1,6 @@
 import React, {  ChangeEvent, useEffect, useState } from "react";
 import PlayerService from "../services/PlayerService";
-import {  TOTAL_PLAYER } from "../constants";
+import {  BACKEND_URL, TOTAL_PLAYER } from "../constants";
 import pallorImage from "../assets/icon.jpeg";
 import playerSvg from '../assets/account-icon.png'
 import battingSvg from '../assets/batter.png'
@@ -402,7 +402,9 @@ const AuctionCenter: React.FC = () => {
                 >
                     <div style={teamStyle}>
                     {/* <img src={team.team_logo} alt="logo" style={teamLogoStyle} /> */}
-                    <img key={index} src={`https://drive.google.com/thumbnail?id=${team.team_logo}&z=w1000`} alt="logo" style={teamLogoStyle}/>
+                    <img key={index} src={BACKEND_URL + '/team_images/' + team.team_logo} alt="logo" style={imageStyle}/>
+
+                    {/* <img key={index} src={`https://drive.google.com/thumbnail?id=${team.team_logo}&z=w1000`} alt="logo" style={teamLogoStyle}/> */}
                     <h4 style={{ padding: "10px" }}>{team.team_name}</h4>
                     </div>
                     {currentBidTeam && currentBidTeam.id === team.id && (
