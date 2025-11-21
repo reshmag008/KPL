@@ -36,21 +36,30 @@ const Header: React.FC<HeaderProps> = () => {
       {isMobileView && (
         <>
         <div style={{display: 'flex',height:'50px'}}>
-          <img src={logo} alt='logo' style={imageStyle} onClick={()=>{setIsDrawerOpen(!isDrawerOpen)}}/>
+          {/* <img src={logo} alt='logo' style={imageStyle} onClick={()=>{setIsDrawerOpen(!isDrawerOpen)}}/> */}
+          <img src={logo} alt="Logo" style={imageStyle} onClick={() => {
+              navigate("/");
+            }}/>
 
 
           <nav  >
             <ul style={ulStyle1}>
               <li style={liStyle}>
                 <button style={buttonStyle} onClick={()=>navigate('/player-list')}>
-                    Player List
+                    Players
                 </button>
                 
               </li>
 
-              <li style={{ ...liStyle, marginRight: '15px' }}>
+              <li style={{ ...liStyle }}>
                 <button style={buttonStyle} onClick={()=>navigate('/player-registration')}>
-                    Player Registration
+                    Registration
+                </button>
+              </li>
+
+              <li style={{ ...liStyle, marginRight: '15px'}}>
+                <button style={buttonStyle} onClick={()=>navigate('/team-list')}>
+                    Teams
                 </button>
               </li>
             </ul>
@@ -80,11 +89,11 @@ const Header: React.FC<HeaderProps> = () => {
                       Home
                 </li>
                 <li style={liStyle} onClick={()=>{navigate('/player-list');setIsDrawerOpen(!isDrawerOpen)}}>
-                      Player List
+                      Players
                 </li>
 
                 <li style={liStyle} onClick={()=>{navigate('/player-registration');setIsDrawerOpen(!isDrawerOpen)}}>
-                      Player Registration
+                      Registration
                 </li>
 
                 <li style={liStyle} onClick={()=>{navigate('/team-list');setIsDrawerOpen(!isDrawerOpen)}} >
@@ -115,13 +124,13 @@ const Header: React.FC<HeaderProps> = () => {
         <ul style={ulStyle}>
           <li style={liStyle}>
             <button style={buttonStyle} onClick={()=>navigate('/player-list')}>
-                Player List
+                Players
             </button>
           </li>
 
           <li style={{ ...liStyle, marginRight: '15px' }}>
             <button style={buttonStyle} onClick={()=>navigate('/player-registration')}>
-                Player Registration
+                Registration
             </button>
           </li>
 
@@ -207,23 +216,25 @@ const ulStyle1: React.CSSProperties = {
 
 const liStyle: React.CSSProperties = {
   padding: "5px",
-  marginLeft:'10px',
+  // marginLeft:'10px',
   color: '#194564',
 };
 
 const buttonStyle : React.CSSProperties = {
-  backgroundColor: '#D10000' ,
+  backgroundColor: '#009F4D' ,
   color: 'white',
   padding: '5px 15px',
   borderRadius: '5px',
   outline: '0',
   border: '0',
   textTransform: 'uppercase',
-  margin: '10px 0px',
+  marginTop : "10px",
+  // margin: '10px 0px',
   cursor: 'pointer',
   boxShadow: '0px 2px 2px lightgray',
   transition: 'background-color 250ms ease',
   opacity:  1,
+  fontSize : 'x-small'
 }
 
 const isMobile = window.matchMedia("(max-width: 600px)").matches;

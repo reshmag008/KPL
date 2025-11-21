@@ -577,6 +577,7 @@ const PlayerRegistration: React.FC = () => {
                     <option value="Bowler">Bowler</option>
                     <option value="All Rounder">All Rounder</option>
                     <option value="Wicket Keeper">Wicket Keeper</option>
+                    <option value="WK/Batter">WK/Batter</option>
                 </select>
                 <span style={errorStyle}>{errors.player_role}</span>
 
@@ -658,7 +659,7 @@ const PlayerRegistration: React.FC = () => {
           
           </div>
           {!isLoading && <button style={buttonStyle} type="submit">Register</button> }
-          {isLoading && <Loader type="spinner-cub" bgColor={'#194564'} color={'#194564'} title={"Registering Player..."} size={50} /> }
+          {isLoading && <Loader type="spinner-cub" bgColor={'#009F4D'} color={'#009F4D'} title={"Registering Player..."} size={50} /> }
       </form>
     </div>
     <Footer/>
@@ -698,12 +699,13 @@ const popUpStyle: React.CSSProperties = {
 
 const formContainerStyle: React.CSSProperties = {
   width: "100%",
-  border: '1px solid #194564', 
+  border: '1px solid #009F4D', 
   boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', 
   borderRadius: '8px', 
   textAlign:'center',
   // display:'grid',
   margin:'100px',
+  backgroundColor : "#E6E6E6"
 };
 
 const formColumnStyle: React.CSSProperties = {
@@ -723,7 +725,7 @@ const inputContainerStyle: React.CSSProperties = {
 };
 
 const buttonStyle : React.CSSProperties = {
-  backgroundColor: '#194564' ,
+  backgroundColor: '#009F4D' ,
   color: 'white',
   padding: '5px 15px',
   borderRadius: '5px',
@@ -765,7 +767,8 @@ const isMobile = window.matchMedia("(max-width: 600px)").matches;
         formContainerStyle.marginBottom = '80px'
         formContainerStyle.width = '100%';
 
-        inputContainerStyle.width = '70%'
+        inputContainerStyle.width = "87%"
+
     }
 
 export default PlayerRegistration;

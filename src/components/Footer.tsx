@@ -21,7 +21,8 @@ const footerStyle: React.CSSProperties = {
     bottom: 0,
     width: '100%',
     display: 'flex', 
-    backgroundColor : 'yellow',
+    // backgroundColor : '#00A676',
+    background: "linear-gradient(145deg, rgba(13, 239, 115, 1), #009F4D)"
   };
 
 const copyRightStyle : React.CSSProperties = {
