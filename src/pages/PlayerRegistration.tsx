@@ -7,11 +7,37 @@ import 'react-image-crop/dist/ReactCrop.css'
 import Loader from "react-js-loader";
 import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import ReactCrop, { type Crop,
+  centerCrop,
+  makeAspectCrop,
+  PixelCrop,
+  convertToPixelCrop
+ } from 'react-image-crop'
+import 'react-image-crop/dist/ReactCrop.css';
+import Cropper from 'react-easy-crop'
+import getCroppedImg from '../services/cropImage';
+import axios from 'axios'
+
+
 
 
 const PlayerRegistration: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<File|null>(null);
+  const [openPopUp, setOpenPopup] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  // const [crop, setCrop] = useState<Crop>({
+  //   unit: '%', // Can be 'px' or '%'
+  //   x: 25,
+  //   y: 25,
+  //   width: 50,
+  //   height: 50
+  // })
+
+  const [crop, setCrop] = useState({ x: 0, y: 0 })
+  const [rotation, setRotation] = useState(0)
+  const [zoom, setZoom] = useState(1)
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
+  const [croppedImage, setCroppedImage] = useState(null)
 
 
   const [formData, setFormData] = useState({
@@ -80,6 +106,7 @@ const PlayerRegistration: React.FC = () => {
         if(response.data){
           toast.success('Player Registered Succesfully', { autoClose: 2000 })
           playerImageUpload(response.data.id);
+          resetData();
         }else{
           setIsLoading(false);
           toast.error('Registration Failed',{ autoClose: 2000 })
@@ -105,58 +132,82 @@ const PlayerRegistration: React.FC = () => {
   }
   };
 
-  const playerImageUpload = (playerId:any) => {
+  const playerImageUpload = async (playerId:any) => {
+    try{
     const formFileData = new FormData()
     if(selectedImage){
       formFileData.append('file_name', formData.fullname + "_" + formData.contact_no + ".jpeg",)
       formFileData.append('player_id', playerId)
-      formFileData.append('image', selectedImage)
-    }
+      formFileData.append('file', selectedImage)
+    
+    // PlayerService().PlayerImageUpload(formFileData).then((response:any)=>{
+    //   console.log("response== ", response);
+    //   resetData();
+    //     setIsLoading(false);
+    // })
 
-    PlayerService().PlayerImageUpload(formFileData).then((response:any)=>{
-      console.log("response== ", response);
-      resetData();
-        setIsLoading(false);
-    })
+    // await PlayerService().PlayerImageGoogleUpload(formFileData);
+
+    await PlayerService().PlayerImageGoogleStorageCloudUpload(formFileData);
+    setIsLoading(false);
+
+    // const uploadFile = async () => {
+  //   const form = new FormData();
+  //   form.append("file", selectedImage);
+
+  //   const res = await axios.post("http://localhost:8443/gcsupload", form, {
+  //     headers: { "Content-Type": "multipart/form-data" }
+  //   });
+  //   console.log("File URL:", res.data.url);
+  // }
+
+    
+  };
+}catch(err){
+  setIsLoading(false);
+}
+
+
    
   }
 
 
-  const getPresignedUrl = () => {
-    let file = selectedImage;
-    console.log("selectedImage== ", selectedImage);
-    console.log("file== ", file);
-      let params = {
-        key: formData.fullname + "_" + formData.contact_no + ".jpeg",
-        contentType: selectedImage?.type,
-        bucket: "palloor-players",
-      };
+  // const getPresignedUrl = () => {
+  //   let file = selectedImage;
+  //   console.log("selectedImage== ", selectedImage);
+  //   console.log("file== ", file);
+  //     let params = {
+  //       key: formData.fullname + "_" + formData.contact_no + ".jpeg",
+  //       contentType: selectedImage?.type,
+  //       bucket: "palloor-players",
+  //     };
 
-      S3Service().GetPresignedUrl(params).then((response:any)=>{
-        console.log("upload url for  Player response== ", response);
-        resetData();
-        setIsLoading(false);
-          const xhr = new XMLHttpRequest();
-          xhr.open("PUT", response.data, true);
-          if(file!==null)xhr.setRequestHeader("Content-Type", file.type);
-          xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-              if (xhr.status === 200) {
-                return "success";
-              } else {
-                console.error("Error occurred while uploading file.");
-                return "failed";
-              }
-            }
-          };
-          let res = xhr.send(file);
-          console.log("res== ", res);
-      })
-  }
+  //     S3Service().GetPresignedUrl(params).then((response:any)=>{
+  //       console.log("upload url for  Player response== ", response);
+  //       resetData();
+  //       setIsLoading(false);
+  //         const xhr = new XMLHttpRequest();
+  //         xhr.open("PUT", response.data, true);
+  //         if(file!==null)xhr.setRequestHeader("Content-Type", file.type);
+  //         xhr.onreadystatechange = function () {
+  //           if (xhr.readyState === 4) {
+  //             if (xhr.status === 200) {
+  //               return "success";
+  //             } else {
+  //               console.error("Error occurred while uploading file.");
+  //               return "failed";
+  //             }
+  //           }
+  //         };
+  //         let res = xhr.send(file);
+  //         console.log("res== ", res);
+  //     })
+  // }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setSelectedImage(e.target.files[0]);
+      // setOpenPopup(true);
     }
   };
   
@@ -208,19 +259,19 @@ const PlayerRegistration: React.FC = () => {
         valid = false;
       }
 
-      if (!jersey_name.trim()) {
-        newErrors.jersey_name = 'Jersey Name is required';
-        valid = false;
-      }
+      // if (!jersey_name.trim()) {
+      //   newErrors.jersey_name = 'Jersey Name is required';
+      //   valid = false;
+      // }
 
-      if (!jersey_size.trim()) {
-        newErrors.jersey_size = 'Jersey Size is required';
-        valid = false;
-      }
-      if (!jersey_no.trim()) {
-        newErrors.jersey_no = 'Jersey No is required';
-        valid = false;
-      }
+      // if (!jersey_size.trim()) {
+      //   newErrors.jersey_size = 'Jersey Size is required';
+      //   valid = false;
+      // }
+      // if (!jersey_no.trim()) {
+      //   newErrors.jersey_no = 'Jersey No is required';
+      //   valid = false;
+      // }
       if (!contact_no.trim()) {
         newErrors.contact_no = 'Contact Number is required';
         valid = false;
@@ -250,8 +301,80 @@ const PlayerRegistration: React.FC = () => {
       return valid;
     };
 
+
+    const onImageLoad = (e:any) => {
+      const { naturalWidth: width, naturalHeight: height } = e.currentTarget
+    
+      const crop = centerCrop(
+        makeAspectCrop(
+          {
+            // You don't need to pass a complete crop into
+            // makeAspectCrop or centerCrop.
+            unit: '%',
+            width: 90,
+          },
+          16 / 9,
+          width,
+          height
+        ),
+        width,
+        height
+      )
+    
+      setCrop(crop)
+    }
+
+    const onCropComplete = (croppedArea:any, croppedAreaPixels:any) => {
+      setCroppedAreaPixels(croppedAreaPixels)
+    }
+
+    // const showCroppedImage = async () => {
+    //   try {
+    //     const croppedImage = await getCroppedImg(
+    //       selectedImage,
+    //       croppedAreaPixels,
+    //       rotation
+    //     )
+    //     console.log('donee', { croppedImage })
+    //     setCroppedImage(croppedImage)
+    //   } catch (e) {
+    //     console.error(e)
+    //   }
+    // }
+
+
+
   return (
     <>
+
+    {openPopUp && 
+            <div style={overlay}>
+              <div style={popUpStyle} >
+                <div>
+                  {/* <button style={buttonStyle} type="submit" onClick={showCroppedImage}>Done</button> */}
+                </div>
+                {selectedImage && (
+                  // <ReactCrop crop={crop} onChange={c => setCrop(c)}>
+                  //     <img src={URL.createObjectURL(selectedImage)}  />
+                  // </ReactCrop>
+
+                  <Cropper
+                    image={URL.createObjectURL(selectedImage)}
+                    crop={crop}
+                    rotation={rotation}
+                    zoom={zoom}
+                    aspect={4 / 3}
+                    onCropChange={setCrop}
+                    onRotationChange={setRotation}
+                    onCropComplete={onCropComplete}
+                    onZoomChange={setZoom}
+                  />
+
+                )}
+              </div>
+            </div>
+    }
+
     <Header/>
     
     <div style={formContainerStyle}>
@@ -314,7 +437,7 @@ const PlayerRegistration: React.FC = () => {
 
             </div>
 
-            <div style={formColumnStyle}>
+            {/* <div style={formColumnStyle}>
 
               <div style={{display:"flex"}}>
                 <span style={labelTextStyle}>Jersey Name</span>
@@ -332,8 +455,9 @@ const PlayerRegistration: React.FC = () => {
                 />
                 <span style={errorStyle}>{errors.jersey_name}</span>
 
-                </div>
-                <div style={formColumnStyle}>
+                </div> */}
+
+                {/* <div style={formColumnStyle}>
               
                 <div style={{display:"flex"}}>
                 <span style={labelTextStyle}>Jersey No</span>
@@ -350,9 +474,9 @@ const PlayerRegistration: React.FC = () => {
                 />
                 <span style={errorStyle}>{errors.jersey_no}</span>
 
-            </div>
+            </div> */}
 
-            <div style={formColumnStyle}>
+            {/* <div style={formColumnStyle}>
 
               <div style={{display:"flex"}}>
                 <span style={labelTextStyle}>Jersey Size</span>
@@ -369,8 +493,9 @@ const PlayerRegistration: React.FC = () => {
                 />
                 <span style={errorStyle}>{errors.jersey_size}</span>
 
-                </div>
-                <div style={formColumnStyle}>
+                </div> */}
+                
+                {/* <div style={formColumnStyle}>
 
                 <div style={{display:"flex"}}>
                   <span style={labelTextStyle}>Profile Link</span>
@@ -386,9 +511,8 @@ const PlayerRegistration: React.FC = () => {
                   value={formData.profile_link}
                   onChange={handleChange}
                 />
-                {/* <span style={errorStyle}>{errors.profile_link}</span> */}
 
-            </div>
+            </div> */}
 
             <div style={formColumnStyle}>
 
@@ -550,8 +674,30 @@ const svgStyle :React.CSSProperties = {
 
 }
 
+const overlay : React.CSSProperties={
+  position: 'fixed',
+top: '0',
+left: "0",
+width: "100%",
+height:" 100%",
+backgroundColor: 'rgba(18, 15, 17, 0.85)', /* Semi-transparent black */
+zIndex: '1000'
+}
+
+const popUpStyle: React.CSSProperties = {
+  position: 'fixed',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  backgroundColor: 'white',
+  padding: '20px',
+  borderRadius: '10px',
+  boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)',
+};
+
+
 const formContainerStyle: React.CSSProperties = {
-  // width: "100%",
+  width: "100%",
   border: '1px solid #194564', 
   boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', 
   borderRadius: '8px', 
@@ -617,7 +763,7 @@ const isMobile = window.matchMedia("(max-width: 600px)").matches;
     if (isMobile) {
         formContainerStyle.margin = '20px'
         formContainerStyle.marginBottom = '80px'
-        formContainerStyle.width = '88%';
+        formContainerStyle.width = '100%';
 
         inputContainerStyle.width = '70%'
     }

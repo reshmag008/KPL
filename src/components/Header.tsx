@@ -109,6 +109,7 @@ const Header: React.FC<HeaderProps> = () => {
         <img src={logo} alt="Logo" style={logoStyle} onClick={() => {
               navigate("/");
             }}/>
+            
       </div>
       <nav>
         <ul style={ulStyle}>
@@ -211,7 +212,7 @@ const liStyle: React.CSSProperties = {
 };
 
 const buttonStyle : React.CSSProperties = {
-  backgroundColor: '#194564' ,
+  backgroundColor: '#D10000' ,
   color: 'white',
   padding: '5px 15px',
   borderRadius: '5px',

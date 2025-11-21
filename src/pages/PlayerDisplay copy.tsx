@@ -13,7 +13,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import congratsJif from '../assets/congratulations.gif';
 import clapJif from '../assets/clap.gif'
-import playerBg from '../assets/aution_card1.jpeg'
+import playerBg from '../assets/player_display.jpeg'
 
 
 const PlayerDisplay: React.FC = () => {
@@ -55,7 +55,7 @@ const PlayerDisplay: React.FC = () => {
         let player = JSON.parse(message)
         setSoldPlayer(player);
         setCurrentCall({})
-        // toast.success(`${player.player_name} sold to ${player.team_name} for ${player.bid_amount}`)
+        toast.success(`${player.player_name} sold to ${player.team_name} for ${player.bid_amount}`)
         getSoldPlayers();
         GetAllTeams();
       });
@@ -63,10 +63,6 @@ const PlayerDisplay: React.FC = () => {
       socket.on("team_complete", (message: any) => {
         setOpenPopUp(true);
         setPopUpContent(JSON.parse(message));
-      })
-
-      socket.on("close_popup", (message: any) => {
-        setOpenPopUp(false);
       })
       
       
@@ -84,12 +80,6 @@ const PlayerDisplay: React.FC = () => {
       console.error("Error fetching players:", error);
     }
   };
-
-   const capitalizeFirst = (str: any) => {
-    if (!str) return "";
-    str = str.toLowerCase();
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
 
 
 
@@ -127,7 +117,7 @@ const PlayerDisplay: React.FC = () => {
 
                 <div style={{display:'flex',justifyContent:'center'}}>
                     <img 
-                    src={BACKEND_URL + '/player_images/' + popUpContent.team_logo}
+                    src={BACKEND_URL + '/team_images/' + popUpContent.team_logo}
                     alt="logo" style={{width: "6rem",
                         height: "6rem",
                         borderRadius: "8px",}} />
@@ -138,16 +128,11 @@ const PlayerDisplay: React.FC = () => {
                     }}>{popUpContent.team_name}</span>
                     
                 </div>
-                
-                <div>
-              <img src={congratsJif} alt="logo" style={jifStyle} />
-            </div>
-                <div style={{display:'flex',justifyContent:'center'}}>
-                  <img src={clapJif} alt="logo" style={{  height: "8rem",width: "8rem",padding: "10px",}} />
-                </div>
-
                 <div style={{display:'flex',justifyContent:'center'}}>
                   <span>Completed Auction</span>
+                </div>
+                <div style={{display:'flex',justifyContent:'center'}}>
+                  <img src={clapJif} alt="logo" style={{  height: "8rem",width: "8rem",padding: "10px",}} />
                 </div>
 
             </div>
@@ -155,44 +140,132 @@ const PlayerDisplay: React.FC = () => {
         }
 
 
+        
+        {/* <div style={{display:'flex', justifyContent:'flex-end', padding:'10px'}}>
+            <span style={{
+                marginTop: '10px',
+                padding: '10px',
+                fontFamily: 'cursive',
+                fontStyle: 'italic',
+                fontSize: 'larger'
+            }}>Auction Powered By : </span>
+            <img src={no5} alt="logo" style={{width: "8rem",height: "4rem",borderRadius: "50px"}} />
+        </div> */}
+        
+       
+        <div style={soldPlayersStyle}>
+
+        {!isMobile && 
+          <div>
+            {allTeams && allTeams.length>0 &&
+              <div style={allTeamStyle}>
+                  
+                  { allTeams.map((element:any, index:number) => (
+                      <div key={index} style={{display:'flex', padding:'10px'}} >
+                          {/* <div > */}
+                              <img
+                              src={BACKEND_URL + '/player_images/' + element.team_logo}
+                                  
+                                  alt="logo"
+                                  style={profileImageStyle1}
+                              />
+                              <div style={{color:'purple'}}>
+                                  <div >
+                                      <span style={fullNameText}>{element.team_name.toUpperCase()}</span>
+                                  </div>
+                                  <div >
+                                      <span style={fullNameText}>Total Points : {element.total_points}</span>
+                                  </div>
+                                  <div >
+                                      <span style={fullNameText}>Max Bid Amount : {element.max_bid_amount}</span>
+                                  </div>
+                                  <div >
+                                      <span style={fullNameText}>Player Count : {element.player_count}/{TOTAL_PLAYER}</span>
+                                  </div>
+                              </div>
+
+                          {/* </div> */}
+
+                      </div>
+                  ))}
+              </div>
+          }
+          </div>
+          }
+
             <div >
+                {/* { currentCall && Object.keys(currentCall).length>0 && (
+                    <div style={teamCallStyle}>
+                        <div style={{border: "1px solid purple",
+                                boxShadow: "0 2px 4px rgba(0, 0, 0, 1.1)",
+                                borderRadius: "8px",color:'green',paddingLeft:'10px', paddingRight:'10px',display:'flex',height:'100px',
+                                marginLeft:'100px'}}>
+                            
+                            <img
+                                src={bellGif}
+                                alt="logo"
+                                style={profileImageStyle1}
+                            />
+                            <h2> Current Bid {currentCall.amount} by {currentCall.team_name} </h2>
+                        </div>
+                    
+                    </div>
+                )} */}
                 {currentBidPlayer && currentBidPlayer.id && (
                     <div style={players__card__wrap}>
                     <div style={cardHeader}>
-                        <img  src={`https://storage.googleapis.com/auction-players/${currentBidPlayer.profile_image}`} alt="logo" style={profileImageStyle}/>
-
-                        {/* <img src={BACKEND_URL + '/player_images/' + currentBidPlayer.profile_image} alt="logo" style={profileImageStyle} /> */}
-
-                        <div style={{ display: 'flex', textAlign: 'center', width: '779px', marginLeft: '183px' }}>
-                          <span style={idText}>{currentBidPlayer.id}. {currentBidPlayer.fullname.toUpperCase()} </span>
-
                         
-                        <div style={{ display: "flex" ,marginLeft:'-811px', marginTop:'537px', width:'780px'}}>
-                            <span style={spanText}>Role : {currentBidPlayer.player_role}</span>
+                        <img src={BACKEND_URL + '/player_images/' + currentBidPlayer.profile_image} alt="logo" style={profileImageStyle} />
+                        <div style={cardBodyTextStyle}>
+                        <div style={{ display: "flex" }}>
+                            <span style={fullNameText}>{currentBidPlayer.fullname}</span>
                         </div>
 
-                        <div style={{ display: "flex" ,marginLeft:'-780px', marginTop:'603px', width:'780px'}}>
+                        <div style={{ display: "flex" }}>
+                            <span style={spanText}> Reg#:{currentBidPlayer.id}</span>
+                        </div>
+
+                        <div style={{ display: "flex" }}>
+                            <span style={spanText}> {currentBidPlayer.location}</span>
+                        </div>
+
+                        <div style={{ display: "flex" }}>
                             <span
-                            style={spanText}
+                            style={{
+                                marginTop: "10px",
+                                fontWeight: "bold",
+                                fontSize: "16px",
+                            }}
                             >
-                            Batting : {currentBidPlayer.batting_style}
+                            {currentBidPlayer.player_role}
                             </span>
                         </div>
 
-                        <div style={{ display: "flex",marginLeft:'-780px', marginTop:'669px', width:'780px' }}>
+                        <div style={{ display: "flex" }}>
                             <span
-                            style={spanText}
+                            style={{
+                                marginTop: "10px",
+                                fontWeight: "bold",
+                                fontSize: "16px",
+                            }}
                             >
-                            Bowling : {currentBidPlayer.bowling_style}
+                            {currentBidPlayer.batting_style}
                             </span>
                         </div>
 
-                        <div style={{display: 'flex', marginLeft:'-780px', marginTop:'732px', width:'780px'}}>
-                            <span style={spanText}> Location : {capitalizeFirst(currentBidPlayer.location)}</span>
+                        <div style={{ display: "flex" }}>
+                            <span
+                            style={{
+                                marginTop: "10px",
+                                fontWeight: "bold",
+                                fontSize: "16px",
+                            }}
+                            >
+                            {currentBidPlayer.bowling_style}
+                            </span>
                         </div>
 
-
-                        <div style={{ display: "flex",marginLeft:'-780px', marginTop:'802px', width:'780px' }}>
+                        <div style={{ display: "flex" }}>
                             <span style={spanText}>
                             Contact : {currentBidPlayer.contact_no}
                             </span>
@@ -207,12 +280,13 @@ const PlayerDisplay: React.FC = () => {
             </div>
 
 
-          <div>
+
           {allSoldPlayers && allSoldPlayers.length>0 &&
               <div style={soldPlayerListStyle}>
                   
                   { allSoldPlayers.map((element:any, index:number) => (
                       <div key={index} style={{display:'flex', padding:'10px'}} >
+                          {/* <div > */}
                               <img
                               src={BACKEND_URL + '/player_images/' + element.profile_image}
                                   alt="logo"
@@ -233,38 +307,14 @@ const PlayerDisplay: React.FC = () => {
                                   </div>
                               </div>
 
+                          {/* </div> */}
 
                       </div>
                   ))}
               </div>
           }
-          </div>
-
-
-              {/* {!isMobile && 
-          <div style={allTeamStyle}>
-            {allTeams && allTeams.length>0 &&
-              <div >
-                  { allTeams.map((team:any, index:number) => (
-                      <div key={index} style={teamStyle} >
-                              
-                      <div style={{display:'flex'}}>
-                        <img key={index} src={BACKEND_URL + '/player_images/' + team.team_logo} alt="logo" style={imageStyle} />
-                        <h4 style={{ padding: "10px" }}>{team.team_name}</h4>
-                      </div>
-                      
-                      <hr />
-                      Max Bid Amount : {team.max_bid_amount}
-                      <hr />
-                      Points : {team.total_points}  ({team.player_count}/{TOTAL_PLAYER})
-                      </div>
-                      
-                  ))}
-              </div>
-          }
-          </div>
-          } */}
            
+        </div>
 
 
 
@@ -323,28 +373,11 @@ const imageStyle1: React.CSSProperties = {
 };
 
 const spanText: React.CSSProperties = {
-  // marginTop: "65px",
+  marginTop: "8px",
   fontWeight: "bold",
-  fontSize: "50px",
-  // paddingLeft: "10px",
-  // marginLeft : '30px',
-  color : 'darkblue',
-  width:'780px',
-  textAlign : 'center'
+  fontSize: "16px",
+  paddingLeft: "10px",
 };
-
-const idText: React.CSSProperties = {
-  // marginTop: '-471px',
-  fontWeight: 'bold',
-  fontSize: '55px',
-  // paddingLeft : '277px',
-  color: "darkblue",
-  width: "881px",
-  height: "96px",
-  marginLeft : '-114px',
-  marginTop : '330px'
-}
-
 
 const fullNameText: React.CSSProperties = {
   marginTop: "10px",
@@ -363,17 +396,17 @@ const svgStyle: React.CSSProperties = {
 };
 
 const profileImageStyle: React.CSSProperties = {
-  height: "32rem",
-  width: "26rem",
-  // padding: "5px",
+  height: "19rem",
+  width: "15rem",
+  padding: "5px",
   alignItems: "flex-start",
-  // display: "grid",
-  marginTop: "300px",
+  display: "grid",
+  marginTop: "-10px",
   objectFit: "cover",
-  // boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-  borderRadius: "23px",
-  marginLeft: "178px",
-  // filter: "grayscale(50%)",
+  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+  borderRadius: "15px",
+  marginLeft: "7px",
+  filter: "grayscale(50%)",
   //   border: "5px solid transparent",
 };
 
@@ -402,10 +435,7 @@ const players__card__wrap: React.CSSProperties = {
   boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
   borderRadius: "8px",
 //   margin: "0/ auto",
-  marginLeft: "180px",
-  width : '1840px',
-  marginTop : '52px',
-  height : '1034px'
+  marginLeft: "299px",
 };
 
 const cardHeader: React.CSSProperties = {
@@ -447,45 +477,18 @@ const soldPlayerListStyle : React.CSSProperties = {
   border: "1px solid purple",
  boxShadow: "0 2px 4px rgba(0, 0, 0, 1.1)",
   borderRadius: "8px",
-  width:'30%',
-  marginTop: '50px',
-  // marginLeft: '-280px'
+  width:'29%',
+  marginTop: '48px',
+  marginLeft: '-540px'
 }
 
 const allTeamStyle :  React.CSSProperties = {
-  // display: "grid",
-  // gridTemplateColumns: "repeat(auto-fit, minmax(15rem, 1fr))",
-  // border: "1px solid purple",
-//  boxShadow: "0 2px 4px rgba(0, 0, 0, 1.1)",
-  // borderRadius: "8px",
-  width:'60%',
-  marginTop:'-121px',
-  marginLeft : '500px'
-}
-
-const teamCardContainer: React.CSSProperties = {
-  border: "1px solid #ccc",
-  borderRadius: "8px",
-  padding: "8px",
-  width: "224px",
-  margin: "20px auto",
-  cursor: "pointer",
-  borderBlockColor: 'green'
-};
-
-
-const teamStyle :  React.CSSProperties = {
- 
   border: "1px solid purple",
-//  boxShadow: "0px 2px 4px rgba(0, 0, 0, 1.1)",
+ boxShadow: "0 2px 4px rgba(0, 0, 0, 1.1)",
   borderRadius: "8px",
-  width:'316px',
-  padding : "20px",
-  // marginTop:'764px',
-  // marginLeft : '-606px'
+  width:'150%',
+  marginTop:'48px'
 }
-
-
 
 const popUpStyle: React.CSSProperties = {
   position: 'fixed',

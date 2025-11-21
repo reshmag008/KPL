@@ -4,8 +4,14 @@ import axios from 'axios'
 
 export const PlayerService = () => ({
 
-    getAllPlayers: () => {
-        return(axios.get(BACKEND_URL + "/players/" ))
+    getAllPlayers: (teamId:any) => {
+        // console.log("teamId== ", params.teamId);
+        if(teamId){
+            return(axios.get(BACKEND_URL + "/players/" + teamId))
+        }else{
+            return(axios.get(BACKEND_URL + "/players/"))
+        }
+        
     },
 
     getAllTeams: () => {
@@ -50,12 +56,24 @@ export const PlayerService = () => ({
         return(axios.post(BACKEND_URL + "/team_complete", teamData))
     },
 
+    closePopup: ()=>{
+        return(axios.post(BACKEND_URL + "/close_popup"))
+    },
+
     getUnsoldPlayers : () =>{
         return(axios.get(BACKEND_URL + "/update_unsold"))
     },
 
     PlayerImageUpload : (formData:any) => {
-        return(axios.post(BACKEND_URL + "/upload-file", formData))
+        return(axios.post(BACKEND_URL + "/player_image_upload", formData))
+    },
+
+    PlayerImageGoogleUpload : (formData:any) => {
+        return(axios.post(BACKEND_URL + "/google-upload-file", formData))
+    },
+
+    PlayerImageGoogleStorageCloudUpload : (formData:any) => {
+        return(axios.post(BACKEND_URL + "/gcsupload", formData))
     }
 
 

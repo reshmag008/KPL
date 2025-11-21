@@ -28,7 +28,7 @@ function App() {
 }
 
 const divStyle : React.CSSProperties = {
-  marginTop : '10rem',
+  marginTop : '6rem',
   marginBottom: '5rem',
 }
 
