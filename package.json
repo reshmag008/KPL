@@ -23,7 +23,7 @@
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.2",
     "mitt": "^3.0.1",
-    "pdfjs-dist": "2.7.570",
+    "pdfjs-dist": "^3.11.174",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-easy-crop": "^5.0.7",
