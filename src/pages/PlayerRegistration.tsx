@@ -17,6 +17,7 @@ import 'react-image-crop/dist/ReactCrop.css';
 import Cropper from 'react-easy-crop'
 import getCroppedImg from '../services/cropImage';
 import axios from 'axios'
+import {buttonColor} from '../constants'
 
 
 
@@ -395,7 +396,7 @@ const PlayerRegistration: React.FC = () => {
 
       <form onSubmit={handleSubmit} style={{margin:'20px'}}>
 
-        <h3 style={{color:'#194564',padding:'10px'}}>Player Registration</h3>
+        <h3 style={{color:'#FFBF00',padding:'10px'}}>Player Registration</h3>
 
         <div style={{gridTemplateColumns :  'repeat(auto-fit, minmax(25rem, 1fr))', display:"grid"}}>
           
@@ -662,6 +663,8 @@ const PlayerRegistration: React.FC = () => {
           {isLoading && <Loader type="spinner-cub" bgColor={'#009F4D'} color={'#009F4D'} title={"Registering Player..."} size={50} /> }
       </form>
     </div>
+
+
     <Footer/>
     </>
   );
@@ -698,14 +701,16 @@ const popUpStyle: React.CSSProperties = {
 
 
 const formContainerStyle: React.CSSProperties = {
-  width: "100%",
-  border: '1px solid #009F4D', 
+  // width: "100%",
+  border: '3px solid #FFBF00', 
   boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', 
-  borderRadius: '8px', 
+  // borderRadius: '8px', 
   textAlign:'center',
   // display:'grid',
-  margin:'100px',
-  backgroundColor : "#E6E6E6"
+  // margin:'100px',
+  backgroundColor : "#001840",
+  marginTop : "56px",
+  height : "36.1rem"
 };
 
 const formColumnStyle: React.CSSProperties = {
@@ -725,8 +730,8 @@ const inputContainerStyle: React.CSSProperties = {
 };
 
 const buttonStyle : React.CSSProperties = {
-  backgroundColor: '#009F4D' ,
-  color: 'white',
+  backgroundColor: buttonColor ,
+  color: '#FFBF00',
   padding: '5px 15px',
   borderRadius: '5px',
   outline: '0',
@@ -757,18 +762,39 @@ const profileImageStyle : React.CSSProperties = {
 
 const labelTextStyle : React.CSSProperties = {
   padding:'10px',
-  color:'#194564',
+  color:'#FFBF00',
   fontWeight:'600'
 }
 
-const isMobile = window.matchMedia("(max-width: 600px)").matches;
-    if (isMobile) {
-        formContainerStyle.margin = '20px'
-        formContainerStyle.marginBottom = '80px'
-        formContainerStyle.width = '100%';
+const screenWidth = window.innerWidth;
+console.log("screenWidth=== ",screenWidth)
+if (screenWidth <= 360) {
+  console.log("<=360 px");
+  formContainerStyle.marginTop = "0px";
+  formContainerStyle.marginBottom = "50px";
+  formContainerStyle.width = "115%";
+  formContainerStyle.height = "130%";
+  inputContainerStyle.width = "87%";
 
-        inputContainerStyle.width = "87%"
+} else if (screenWidth <= 480) {
+  console.log("<=480 px");
+  formContainerStyle.marginTop = "0px";
+  formContainerStyle.marginBottom = "50px";
+  formContainerStyle.width = "110%";
+  formContainerStyle.height = "100%";
+  inputContainerStyle.width = "87%";
+  
 
-    }
+} else if (screenWidth <= 600) {
+  console.log("<=600 px");
+  formContainerStyle.marginTop = "0px";
+  formContainerStyle.marginBottom = "80px";
+  formContainerStyle.width = "103%";
+  formContainerStyle.height = "100%";
+  inputContainerStyle.width = "87%";
+}
+
+
+
 
 export default PlayerRegistration;

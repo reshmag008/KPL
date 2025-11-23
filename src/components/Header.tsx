@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import logo from "../assets/icon.jpeg"; // Import your logo file
 import { useNavigate } from "react-router-dom";
 import sidebarButton from '../assets/ham1.png'
+import { buttonColor, headerBg } from "../constants";
 
 interface HeaderProps {}
 
@@ -35,7 +36,7 @@ const Header: React.FC<HeaderProps> = () => {
       
       {isMobileView && (
         <>
-        <div style={{display: 'flex',height:'50px'}}>
+        <div style={mobileViewStyle}>
           {/* <img src={logo} alt='logo' style={imageStyle} onClick={()=>{setIsDrawerOpen(!isDrawerOpen)}}/> */}
           <img src={logo} alt="Logo" style={imageStyle} onClick={() => {
               navigate("/");
@@ -76,7 +77,7 @@ const Header: React.FC<HeaderProps> = () => {
             <div style={{display:'flex',padding:'10px',
                  backgroundColor:'#194564', color:'white'}} >
                   <div>
-                    <span style={{marginRight:'30px'}} ><strong>Kavumbhagam Premier Leauge</strong></span>
+                    <span style={{marginRight:'30px'}} ><strong>BK Auction Arena</strong></span>
                     <span  onClick={openSideBar}><strong>X</strong></span>
                   </div>
               </div>
@@ -118,8 +119,9 @@ const Header: React.FC<HeaderProps> = () => {
         <img src={logo} alt="Logo" style={logoStyle} onClick={() => {
               navigate("/");
             }}/>
-            
+            <div style={{padding : '10px', marginTop:'22px', color : '#FFBF00',fontWeight:'900', fontFamily:'cursive' }} >Club GPT Cricket Premier League</div>
       </div>
+      
       <nav>
         <ul style={ulStyle}>
           <li style={liStyle}>
@@ -128,7 +130,7 @@ const Header: React.FC<HeaderProps> = () => {
             </button>
           </li>
 
-          <li style={{ ...liStyle, marginRight: '15px' }}>
+          <li style={{ ...liStyle}}>
             <button style={buttonStyle} onClick={()=>navigate('/player-registration')}>
                 Registration
             </button>
@@ -156,9 +158,13 @@ const Header: React.FC<HeaderProps> = () => {
 
 // CSS styles
 
+const mobileViewStyle : React.CSSProperties = {
+  display: 'flex',height:'50px',backgroundColor: headerBg
+}
+
 const imageStyle : React.CSSProperties = {
-  height : '3rem',
-  width: '3rem',
+  height : '2.5rem',
+  width: '2.5rem',
   // margin:'-10px',
   padding : '10px'
 }
@@ -168,13 +174,13 @@ const headerStyle: React.CSSProperties = {
   justifyContent: "space-between",
   alignItems: "center",
   padding: "10px 20px",
-  backgroundColor: "white",
+  backgroundColor: headerBg,
   color: "#fff",
   position: 'fixed',
   top: 0,
   width: '100%',
   marginLeft : '-20px',
-  height: '72px'
+  height: '35px'
 };
 
 const sidebarStyle : React.CSSProperties = {
@@ -189,11 +195,12 @@ const sidebarStyle : React.CSSProperties = {
 }
 
 const logoContainerStyle: React.CSSProperties = {
+  display : 'flex',
   marginRight: "auto", // Pushes the logo to the left
 };
 
 const logoStyle: React.CSSProperties = {
-  height: "80px", // Adjust according to your logo size
+  height: "4rem", // Adjust according to your logo size
   cursor:'pointer',
   padding:'10px'
 };
@@ -221,8 +228,8 @@ const liStyle: React.CSSProperties = {
 };
 
 const buttonStyle : React.CSSProperties = {
-  backgroundColor: '#009F4D' ,
-  color: 'white',
+  backgroundColor: buttonColor ,
+  color: '#E4D00A',
   padding: '5px 15px',
   borderRadius: '5px',
   outline: '0',
@@ -234,15 +241,30 @@ const buttonStyle : React.CSSProperties = {
   boxShadow: '0px 2px 2px lightgray',
   transition: 'background-color 250ms ease',
   opacity:  1,
-  fontSize : 'x-small'
+  fontWeight : 'bolder'
+  // fontSize : 'x-small'
 }
 
-const isMobile = window.matchMedia("(max-width: 600px)").matches;
-    if (isMobile) {
-        ulStyle.display = 'grid';
-        ulStyle.textAlign = 'left';
-   
-    }
+
+const screenWidth = window.innerWidth;
+console.log("screenWidth==header= ",screenWidth)
+if (screenWidth <= 360) {
+  console.log("header <=360 px");
+  mobileViewStyle.width = "116%"
+ 
+
+} else if (screenWidth <= 480) {
+  console.log("header <=480 px");
+  mobileViewStyle.width = "112%"
+  
+
+} else if (screenWidth <= 600) {
+  console.log("header <=600 px");
+  ulStyle.display = 'grid';
+  ulStyle.textAlign = 'left';
+
+}
+
 
 
 

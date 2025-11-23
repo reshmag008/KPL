@@ -22,11 +22,11 @@ const footerStyle: React.CSSProperties = {
     width: '100%',
     display: 'flex', 
     // backgroundColor : '#00A676',
-    background: "linear-gradient(145deg, rgba(13, 239, 115, 1), #009F4D)"
+    background: "linear-gradient(145deg, #00072D, #051650)"
   };
 
 const copyRightStyle : React.CSSProperties = {
-    color: 'black',
+    color: '#E4D00A',
     fontWeight : 'bolder',
     marginLeft: '10px',
     alignItems: 'left'

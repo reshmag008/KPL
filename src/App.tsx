@@ -28,8 +28,8 @@ function App() {
 }
 
 const divStyle : React.CSSProperties = {
-  marginTop : '6rem',
-  marginBottom: '5rem',
+  // marginTop : '6rem',
+  // marginBottom: '5rem',
 }
 
 
