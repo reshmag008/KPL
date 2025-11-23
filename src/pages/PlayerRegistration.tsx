@@ -780,7 +780,7 @@ if (screenWidth <= 360) {
   console.log("<=480 px");
   formContainerStyle.marginTop = "0px";
   formContainerStyle.marginBottom = "50px";
-  formContainerStyle.width = "110%";
+  formContainerStyle.width = "98%";
   formContainerStyle.height = "100%";
   inputContainerStyle.width = "87%";
   

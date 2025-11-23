@@ -255,7 +255,7 @@ if (screenWidth <= 360) {
 
 } else if (screenWidth <= 480) {
   console.log("header <=480 px");
-  mobileViewStyle.width = "112%"
+  mobileViewStyle.width = "99%"
   
 
 } else if (screenWidth <= 600) {
